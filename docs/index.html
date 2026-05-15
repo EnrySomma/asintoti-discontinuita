@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guida Studio Funzioni</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0b;
+    --paper: #f5f0e8;
+    --cream: #ede7d6;
+    --gold: #b8860b;
+    --gold-light: #d4a017;
+    --red: #8b1a1a;
+    --blue: #1a3a5c;
+    --green: #1a4a2a;
+    --rule: #c8b89a;
+    --highlight: #fdf3c0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  /* COVER */
+  .cover {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 80px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(184,134,11,0.04) 40px,
+      rgba(184,134,11,0.04) 41px
+    );
+  }
+  .cover-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+  .cover-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--paper);
+    margin-bottom: 24px;
+  }
+  .cover h1 em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: #aaa;
+    font-style: italic;
+    margin-bottom: 48px;
+  }
+  .cover-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+  .cover-topic {
+    border: 1px solid rgba(184,134,11,0.4);
+    padding: 6px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--gold-light);
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* NAV */
+  .toc {
+    background: var(--cream);
+    border-bottom: 2px solid var(--rule);
+    padding: 48px 0;
+  }
+  .toc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 8px;
+  }
+  .toc-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--rule);
+    text-decoration: none;
+    color: var(--ink);
+    transition: color 0.2s;
+    font-size: 14px;
+  }
+  .toc-item:hover { color: var(--gold); }
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    min-width: 24px;
+  }
+
+  /* SECTIONS */
+  .section {
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    padding-top: 6px;
+    min-width: 28px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  .section-title span { color: var(--gold); font-style: italic; }
+
+  /* TYPOGRAPHY */
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--blue);
+    margin: 36px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--blue);
+    display: inline-block;
+  }
+  h4 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--red);
+    margin: 24px 0 8px;
+    letter-spacing: 0.5px;
+  }
+  p { margin-bottom: 14px; }
+
+  /* SPECIAL BLOCKS */
+  .def-box {
+    background: white;
+    border-left: 4px solid var(--blue);
+    padding: 20px 24px;
+    margin: 24px 0;
+    box-shadow: 2px 2px 0 var(--rule);
+  }
+  .def-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--blue);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .theorem-box {
+    background: #f0f4f0;
+    border: 2px solid var(--green);
+    border-radius: 0;
+    padding: 24px 28px;
+    margin: 24px 0;
+    position: relative;
+  }
+  .theorem-box::before {
+    content: 'TEOREMA';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background: var(--green);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 2px 10px;
+  }
+
+  .warning-box {
+    background: #fff8e1;
+    border-left: 4px solid var(--gold);
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .warning-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .example-box {
+    background: #f8f8f8;
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--red);
+    padding: 24px 28px;
+    margin: 24px 0;
+  }
+  .example-box .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+
+  .step-box {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .steps ol {
+    list-style: none;
+    counter-reset: step-counter;
+  }
+  .steps ol li {
+    counter-increment: step-counter;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .steps ol li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .steps ol li::before {
+    content: counter(step-counter);
+    background: var(--ink);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* MATH */
+  .math {
+    font-family: 'JetBrains Mono', monospace;
+    background: #eee;
+    padding: 2px 6px;
+    font-size: 13px;
+    color: var(--blue);
+  }
+  .math-block {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--ink);
+    color: #7ec8e3;
+    padding: 20px 28px;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 2;
+    overflow-x: auto;
+  }
+  .math-block .comment {
+    color: #666;
+    font-style: normal;
+    font-size: 12px;
+  }
+  .math-block .highlight { color: var(--gold-light); }
+  .math-block .result { color: #90ee90; font-weight: 600; }
+
+  /* SPECIES TABLE */
+  .disc-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+  .disc-table th {
+    background: var(--ink);
+    color: white;
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+  .disc-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .disc-table tr:nth-child(even) td { background: var(--cream); }
+  .disc-table .species {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .sp1 { color: var(--red); }
+  .sp2 { color: var(--blue); }
+  .sp3 { color: var(--green); }
+
+  /* FORMULA SHEET */
+  .formula-sheet {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 60px 0;
+  }
+  .formula-sheet h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+  .formula-sheet .subtitle {
+    color: #888;
+    font-style: italic;
+    margin-bottom: 48px;
+    font-size: 14px;
+  }
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+  }
+  .formula-card {
+    border: 1px solid rgba(184,134,11,0.3);
+    padding: 20px;
+  }
+  .formula-card h4 {
+    color: var(--gold-light);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(184,134,11,0.2);
+  }
+  .formula-card p {
+    font-size: 13px;
+    color: #ccc;
+    margin-bottom: 8px;
+  }
+  .formula-card .f {
+    font-family: 'JetBrains Mono', monospace;
+    color: #7ec8e3;
+    font-size: 13px;
+    display: block;
+    margin: 6px 0;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.05);
+  }
+  .formula-card .f.gold { color: var(--gold-light); }
+  .formula-card .f.green { color: #90ee90; }
+
+  /* EXERCISES */
+  .exercise {
+    background: white;
+    border: 1px solid var(--rule);
+    margin: 20px 0;
+    overflow: hidden;
+  }
+  .exercise-header {
+    background: var(--cream);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .exercise-num {
+    background: var(--red);
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    letter-spacing: 1px;
+  }
+  .exercise-q {
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .exercise-body { padding: 20px 24px; }
+
+  /* PRACTICE */
+  .practice {
+    background: linear-gradient(135deg, #1a3a5c 0%, #0f0e0b 100%);
+    color: white;
+    padding: 60px 0;
+  }
+  .practice h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 36px);
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+  .practice-sub {
+    color: #aaa;
+    font-style: italic;
+    margin-bottom: 36px;
+    font-size: 14px;
+  }
+  .practice-list {
+    list-style: none;
+    counter-reset: ex;
+  }
+  .practice-list li {
+    counter-increment: ex;
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 15px;
+  }
+  .practice-list li::before {
+    content: 'ES.' counter(ex);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    min-width: 44px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .cover { padding: 60px 24px; }
+    .container { padding: 0 20px; }
+    .math-block { font-size: 12px; padding: 16px; }
+    .formula-grid { grid-template-columns: 1fr; }
+    .toc-grid { grid-template-columns: 1fr; }
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; }
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+
+  /* SEPARATOR */
+  .divider {
+    text-align: center;
+    margin: 40px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--rule);
+    letter-spacing: 4px;
+  }
+
+  /* GRID 2 col */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 20px 0;
+  }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* highlight text */
+  mark { background: var(--highlight); padding: 1px 3px; }
+
+  /* inline code */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: #eee;
+    padding: 1px 5px;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-tag">Matematica · Analisi · Guida Completa</div>
+    <h1>Studio delle <em>Funzioni</em><br>e Discontinuità</h1>
+    <p class="cover-sub">Asintoti · Discontinuità · Teoremi · Sistemi di funzioni</p>
+    <div class="cover-topics">
+      <span class="cover-topic">Asintoti verticali</span>
+      <span class="cover-topic">Asintoti orizzontali</span>
+      <span class="cover-topic">Asintoti obliqui</span>
+      <span class="cover-topic">Disc. 1ª specie</span>
+      <span class="cover-topic">Disc. 2ª specie</span>
+      <span class="cover-topic">Disc. 3ª specie</span>
+      <span class="cover-topic">Teoremi fondamentali</span>
+      <span class="cover-topic">Sistemi di funzioni</span>
+    </div>
+  </div>
+</div>
+
+<!-- INDICE -->
+<div class="toc">
+  <div class="container">
+    <div class="toc-title">Indice dei contenuti</div>
+    <div class="toc-grid">
+      <a href="#teoria" class="toc-item"><span class="toc-num">01</span>Teoria: Limiti e continuità</a>
+      <a href="#teoremi" class="toc-item"><span class="toc-num">02</span>I tre teoremi fondamentali</a>
+      <a href="#discontinuita" class="toc-item"><span class="toc-num">03</span>Punti di discontinuità</a>
+      <a href="#asintoti" class="toc-item"><span class="toc-num">04</span>Asintoti (V, O, Obl.)</a>
+      <a href="#esercizi" class="toc-item"><span class="toc-num">05</span>Esercizi svolti passo passo</a>
+      <a href="#sistemi" class="toc-item"><span class="toc-num">06</span>Sistemi di funzioni</a>
+      <a href="#allenamento" class="toc-item"><span class="toc-num">07</span>Esercizi per allenamento</a>
+      <a href="#formulario" class="toc-item"><span class="toc-num">08</span>Formulario riassuntivo</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== SEZIONE 1: TEORIA ===== -->
+<div id="teoria" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Teoria: Limiti e <span>Continuità</span></h2>
+    </div>
+
+    <p>Prima di studiare discontinuità e asintoti, è fondamentale avere chiari i concetti di <strong>limite</strong> e <strong>continuità</strong>. Tutto il resto si costruisce su questi mattoni.</p>
+
+    <h3>Il concetto di Limite</h3>
+    <div class="def-box">
+      <div class="label">Definizione intuitiva</div>
+      <p>Il limite di una funzione <code>f(x)</code> per <code>x → x₀</code> è il valore <strong>verso cui tende</strong> <code>f(x)</code> man mano che <code>x</code> si avvicina a <code>x₀</code>, anche se magari in quel punto la funzione non è definita.</p>
+    </div>
+
+    <p><strong>Esempio immediato:</strong> considera <code>f(x) = (x²−1)/(x−1)</code>. In <code>x=1</code> la funzione non è definita (0/0), ma semplificando ottengo <code>f(x) = x+1</code>, quindi il limite per <code>x→1</code> è <strong>2</strong>.</p>
+
+    <div class="two-col">
+      <div class="def-box">
+        <div class="label">Limite destro</div>
+        <p>Il valore verso cui tende <code>f(x)</code> quando <code>x</code> si avvicina a <code>x₀</code> <strong>da destra</strong> (da valori maggiori).</p>
+        <div class="math-block" style="padding:10px 14px;font-size:13px;">lim f(x) = L⁺
+x→x₀⁺</div>
+      </div>
+      <div class="def-box">
+        <div class="label">Limite sinistro</div>
+        <p>Il valore verso cui tende <code>f(x)</code> quando <code>x</code> si avvicina a <code>x₀</code> <strong>da sinistra</strong> (da valori minori).</p>
+        <div class="math-block" style="padding:10px 14px;font-size:13px;">lim f(x) = L⁻
+x→x₀⁻</div>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">⚠ Regola fondamentale</div>
+      Il limite (bilaterale) esiste <strong>se e solo se</strong> il limite destro e il limite sinistro esistono e sono <strong>uguali</strong>: <code>L⁺ = L⁻ = L</code>.
+    </div>
+
+    <h3>Continuità di una funzione</h3>
+    <div class="def-box">
+      <div class="label">Definizione</div>
+      <p>Una funzione è <strong>continua in x₀</strong> se valgono <em>tutte e tre</em> queste condizioni:</p>
+      <ol style="margin-left:20px;margin-top:10px;">
+        <li>f(x₀) è definita (x₀ è nel dominio)</li>
+        <li>esiste il limite di f(x) per x→x₀</li>
+        <li>il limite coincide con il valore: <code>lim f(x) = f(x₀)</code></li>
+      </ol>
+    </div>
+    <p>Se anche una sola di queste condizioni non è soddisfatta, la funzione ha un <strong>punto di discontinuità</strong> in x₀.</p>
+
+    <h3>Limiti notevoli frequenti</h3>
+    <div class="math-block">
+<span class="comment">// Forme indeterminate da "sciogliere":</span>
+0/0   →  semplifica, razionalizza, o usa De l'Hôpital
+∞/∞   →  dividi per il termine di grado massimo
+0·∞   →  riscrivi come 0/(1/∞) o ∞/(1/0)
+∞−∞   →  raccogli a fattor comune o razionalizza
+
+<span class="comment">// Limite all'infinito di funzione razionale f(x)/g(x):</span>
+<span class="highlight">grado num > grado den  →  ±∞</span>
+<span class="highlight">grado num = grado den  →  rapporto coefficienti principali</span>
+<span class="highlight">grado num < grado den  →  0</span>
+    </div>
+
+    <h3>Il Dominio: primo passo sempre</h3>
+    <p>Prima di tutto, calcola il <strong>dominio</strong> della funzione. Questo ti dice subito dove cercare i punti "sospetti" di discontinuità:</p>
+    <ul style="margin-left:20px;margin-bottom:14px;">
+      <li>Frazioni: denominatore ≠ 0</li>
+      <li>Radici pari: argomento ≥ 0</li>
+      <li>Logaritmi: argomento &gt; 0</li>
+      <li>Funzioni a tratti: bordi tra i pezzi</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ===== SEZIONE 2: TEOREMI ===== -->
+<div id="teoremi" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">I Tre <span>Teoremi Fondamentali</span></h2>
+    </div>
+
+    <p>Questi tre teoremi riguardano i limiti e sono spesso usati per <strong>giustificare i calcoli</strong> nella classificazione dei punti di discontinuità e nella ricerca degli asintoti.</p>
+
+    <h3>Teorema 1 — Unicità del Limite</h3>
+    <div class="theorem-box">
+      <p><strong>Enunciato:</strong> Se esiste il limite di <code>f(x)</code> per <code>x → x₀</code>, allora <strong>tale limite è unico</strong>.</p>
+    </div>
+    <div class="def-box">
+      <div class="label">Cosa significa</div>
+      <p>Una funzione non può avere due limiti diversi nello stesso punto. Se calcoli il limite e trovi un valore L, sei sicuro che non ce ne può essere un altro.</p>
+    </div>
+    <div class="warning-box">
+      <div class="label">Quando si applica</div>
+      Quando vuoi verificare che il limite esiste davvero: se il limite destro e sinistro sono <em>diversi</em>, il limite (bilaterale) non esiste. Non c'è un "limite uguale a due cose diverse".
+    </div>
+    <div class="example-box">
+      <div class="label">Esempio pratico</div>
+      <p>Considera <code>f(x) = |x|/x</code>:</p>
+      <div class="math-block">
+lim |x|/x = +1   (x>0: |x|=x, quindi x/x=1)
+x→0⁺
+
+lim |x|/x = −1   (x<0: |x|=−x, quindi −x/x=−1)
+x→0⁻
+
+<span class="result">Limite destro ≠ limite sinistro  →  il limite NON esiste.</span>
+      </div>
+      <p>Per il Teorema 1, non potendo avere +1 e −1 insieme, il limite non esiste in x=0.</p>
+    </div>
+
+    <h3>Teorema 2 — Permanenza del Segno</h3>
+    <div class="theorem-box">
+      <p><strong>Enunciato:</strong> Se <code>lim f(x) = L > 0</code> (oppure L &lt; 0) per <code>x → x₀</code>, allora esiste un intorno di x₀ in cui <code>f(x)</code> ha lo stesso segno di L.</p>
+    </div>
+    <div class="def-box">
+      <div class="label">Cosa significa</div>
+      <p>Se il limite è positivo, la funzione è positiva vicino al punto. Se il limite è negativo, la funzione è negativa vicino al punto. <strong>Il segno del limite si "trasmette" alla funzione nelle vicinanze.</strong></p>
+    </div>
+    <div class="warning-box">
+      <div class="label">Quando si applica</div>
+      Per determinare il segno di una funzione vicino a un punto (utile per classificare asintoti e per lo studio del segno). Se sai che <code>lim f(x) = 3 > 0</code>, puoi concludere che f(x) &gt; 0 in un intorno del punto.
+    </div>
+    <div class="example-box">
+      <div class="label">Esempio pratico</div>
+      <div class="math-block">
+Sappiamo che <code>lim (x²+1) = 2 > 0</code> per <code>x→1</code>, per il Teorema 2 <code>x²+1 > 0</code> in un intorno di x=1 (in effetti è sempre positiva).
+      </div>
+    </div>
+
+    <h3>Teorema 3 — del Confronto (dei Carabinieri)</h3>
+    <div class="theorem-box">
+      <p><strong>Enunciato:</strong> Se <code>g(x) ≤ f(x) ≤ h(x)</code> in un intorno di x₀ e <code>lim g(x) = lim h(x) = L</code>, allora <code>lim f(x) = L</code>.</p>
+    </div>
+    <div class="def-box">
+      <div class="label">Cosa significa</div>
+      <p>Se una funzione è "schiacciata" tra due funzioni che hanno lo stesso limite, anche lei deve avere quel limite. È detto dei "carabinieri" perché <em>la funzione è scortata</em> dalle altre due verso lo stesso valore.</p>
+    </div>
+    <div class="warning-box">
+      <div class="label">Quando si applica</div>
+      Quando il calcolo diretto del limite è difficile, ma riesci a trovare due funzioni più semplici che "stringono" quella complicata. Tipico per funzioni con seno o coseno: <code>−1 ≤ sin(x) ≤ 1</code>.
+    </div>
+    <div class="example-box">
+      <div class="label">Esempio pratico</div>
+      <div class="math-block">
+Calcola: lim  sin(x)/x
+         x→∞
+
+Sappiamo: −1 ≤ sin(x) ≤ 1
+Dividiamo per x (x→+∞, x>0):
+   −1/x ≤ sin(x)/x ≤ 1/x
+
+lim (−1/x) = 0  e  lim (1/x) = 0
+x→∞                 x→∞
+
+<span class="result">Per il Teorema 3:  lim sin(x)/x = 0</span>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">📌 Riepilogo dei tre teoremi</div>
+      <strong>T1 Unicità:</strong> il limite è uno solo (se esiste) → usalo per dire "il limite non esiste" quando sinistro ≠ destro.<br>
+      <strong>T2 Permanenza:</strong> il segno del limite = segno della funzione vicino al punto → utile per il segno.<br>
+      <strong>T3 Confronto:</strong> se f è tra g e h con stesso limite → anche f ha quel limite → utile quando calcolo diretto è impossibile.
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== SEZIONE 3: DISCONTINUITÀ ===== -->
+<div id="discontinuita" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Punti di <span>Discontinuità</span></h2>
+    </div>
+
+    <p>Un punto di discontinuità è un punto <code>x₀</code> del dominio (o suo bordo) in cui la funzione <strong>non è continua</strong>. Dobbiamo imparare a <em>riconoscerli</em> e <em>classificarli</em> nelle tre specie.</p>
+
+    <h3>Come riconoscere i punti sospetti</h3>
+    <p>I punti da esaminare sono sempre:</p>
+    <ul style="margin-left:20px;margin-bottom:14px;">
+      <li><strong>Punti esclusi dal dominio</strong> (dove il denominatore si annulla, logaritmo non definito, ecc.)</li>
+      <li><strong>Punti di "giuntura"</strong> nelle funzioni definite per casi (a tratti)</li>
+    </ul>
+
+    <h3>La classificazione: le 3 specie</h3>
+    <table class="disc-table">
+      <tr>
+        <th>Specie</th>
+        <th>Condizione</th>
+        <th>Cosa succede</th>
+        <th>Esempio visivo</th>
+      </tr>
+      <tr>
+        <td><span class="species sp1">1ª Specie</span><br><small>(salto)</small></td>
+        <td>Limite destro e sinistro esistono finiti, ma sono <strong>diversi</strong></td>
+        <td>La funzione "salta" da un valore all'altro</td>
+        <td>Gradino, funzione a tratti con salto</td>
+      </tr>
+      <tr>
+        <td><span class="species sp2">2ª Specie</span><br><small>(essenziale)</small></td>
+        <td>Almeno uno dei due limiti (destro o sinistro) è <strong>infinito o non esiste</strong></td>
+        <td>La funzione va a ±∞ o oscilla senza limite</td>
+        <td>Asintoto verticale, 1/x in x=0</td>
+      </tr>
+      <tr>
+        <td><span class="species sp3">3ª Specie</span><br><small>(eliminabile)</small></td>
+        <td>Esiste il limite finito, ma <strong>non coincide</strong> con f(x₀) (o f non è definita in x₀)</td>
+        <td>C'è un "buco" nel grafico, colmabile</td>
+        <td>Punto isolato rimovibile</td>
+      </tr>
+    </table>
+
+    <h3>Procedimento passo passo</h3>
+    <div class="steps">
+      <ol>
+        <li><strong>Trova il dominio</strong> e individua i punti sospetti (esclusi o di giuntura).</li>
+        <li>Per ogni punto <code>x₀</code>: <strong>calcola il limite sinistro</strong> <code>lim f(x)</code> per <code>x→x₀⁻</code>.</li>
+        <li>Calcola il <strong>limite destro</strong> <code>lim f(x)</code> per <code>x→x₀⁺</code>.</li>
+        <li><strong>Confronta</strong> i due limiti e il valore f(x₀) (se esiste).</li>
+        <li><strong>Classifica</strong> secondo la tabella sopra.</li>
+        <li>Scrivi la <strong>conclusione</strong>: "discontinuità di N-esima specie in x = x₀".</li>
+      </ol>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Esempio 1 — Funzione a tratti con discontinuità di 1ª specie</div>
+      <div class="math-block">
+f(x) = { x+1     se x &lt; 2
+        { x²−1    se x ≥ 2
+
+<span class="comment">// Punto sospetto: x = 2 (giuntura tra i due pezzi)</span>
+
+lim f(x) = lim (x+1) = 2+1 = <span class="highlight">3</span>
+x→2⁻       x→2⁻
+
+lim f(x) = lim (x²−1) = 4−1 = <span class="highlight">3</span>
+x→2⁺       x→2⁺
+
+<span class="comment">// Oops, uguali! Proviamo con un'altra funzione...</span>
+      </div>
+      <p>Modifichiamo leggermente l'esempio per mostrare la 1ª specie:</p>
+      <div class="math-block">...</div>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Esempio 2 — Discontinuità di 2ª specie</div>
+      <div class="math-block">
+f(x) = 1/(x−3)²
+
+<span class="comment">// Dominio: x ≠ 3. Punto sospetto: x = 3</span>
+
+lim  1/(x−3)² = <span class="highlight">+∞</span>
+x→3⁻
+
+lim  1/(x−3)² = <span class="highlight">+∞</span>
+x→3⁺
+
+<span class="comment">// Entrambi infiniti (anche se coincidono come +∞,
+// il limite è infinito = non è finito)</span>
+
+<span class="result">→ DISCONTINUITÀ DI 2ª SPECIE in x = 3
+   (c'è un asintoto verticale in x = 3)</span>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Esempio 3 — Discontinuità di 3ª specie (eliminabile)</div>
+      <div class="math-block">
+f(x) = (x²−4)/(x−2)
+
+<span class="comment">// Dominio: x ≠ 2. Punto sospetto: x = 2</span>
+
+<span class="comment">// Semplifico: (x²−4) = (x−2)(x+2)</span>
+f(x) = (x−2)(x+2)/(x−2) = x+2  per x ≠ 2
+
+lim  f(x) = lim (x+2) = <span class="highlight">4</span>   (finito!)
+x→2         x→2
+
+<span class="comment">// f(2) non è definita (x=2 fuori dal dominio)
+// ma il limite esiste ed è finito</span>
+
+<span class="result">→ DISCONTINUITÀ DI 3ª SPECIE in x = 2
+   (il "buco" si può colmare definendo f(2) = 4)</span>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">🧠 Trucco mnemonico</div>
+      <strong>1ª specie = Salto</strong> (due limiti finiti diversi) → LSD ≠ LSX<br>
+      <strong>2ª specie = Sfonda</strong> (almeno un limite infinito o inesistente)<br>
+      <strong>3ª specie = Stappa</strong> (limite esiste finito, ma manca il valore o è sbagliato → si "tappa" il buco)
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== SEZIONE 4: ASINTOTI ===== -->
+<div id="asintoti" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Gli <span>Asintoti</span></h2>
+    </div>
+
+    <p>Un asintoto è una retta a cui il grafico della funzione si avvicina sempre di più, senza mai toccarla (o toccandola solo in un numero finito di punti). Esistono tre tipi.</p>
+
+    <h3>Asintoto Verticale</h3>
+    <div class="def-box">
+      <div class="label">Definizione</div>
+      <p>La retta <code>x = a</code> è asintoto verticale di f(x) se almeno uno tra <code>lim f(x)</code> per <code>x→a⁺</code> o <code>x→a⁻</code> è <code>±∞</code>.</p>
+    </div>
+
+    <p><strong>Come si trova:</strong> cerca i punti fuori dal dominio (denominatore = 0, ecc.) e controlla se il limite è infinito.</p>
+
+    <div class="math-block">
+<span class="comment">// PROCEDIMENTO asintoto verticale:</span>
+1. Trova x = a  dove f non è definita (es. denom. = 0)
+2. Calcola lim f(x)  per x→a⁺ e x→a⁻
+3. Se almeno uno vale ±∞:  x = a  è asintoto verticale
+
+<span class="comment">// Nota: le discontinuità di 2ª specie DANNO asintoti verticali!</span>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Esempio — Asintoto verticale</div>
+      <div class="math-block">
+f(x) = x²/(x−1)     (dalla lavagna!)
+
+<span class="comment">// Dominio: x ≠ 1</span>
+
+lim  x²/(x−1):  numeratore → 1, denominatore → 0⁻
+x→1⁻                                          (da sinistra, x−1 < 0)
+
+→  1/0⁻ = <span class="highlight">−∞</span>
+
+lim  x²/(x−1):  numeratore → 1, denominatore → 0⁺
+x→1⁺                                          (da destra, x−1 > 0)
+
+→  1/0⁺ = <span class="highlight">+∞</span>
+
+<span class="result">→ ASINTOTO VERTICALE: x = 1
+   (la funzione va a −∞ da sinistra e +∞ da destra)</span>
+      </div>
+    </div>
+
+    <h3>Asintoto Orizzontale</h3>
+    <div class="def-box">
+      <div class="label">Definizione</div>
+      <p>La retta <code>y = L</code> è asintoto orizzontale se <code>lim f(x) = L</code> (finito) per <code>x→+∞</code> e/o <code>x→−∞</code>.</p>
+    </div>
+
+    <div class="math-block">
+<span class="comment">// PROCEDIMENTO asintoto orizzontale:</span>
+1. Calcola  lim f(x)  per x→+∞
+            → se = L (finito):  y = L  è as. orizz. a destra
+
+2. Calcola  lim f(x)  per x→−∞
+            → se = L (finito):  y = L  è as. orizz. a sinistra
+
+<span class="comment">// Possono esistere 0, 1 o 2 asintoti orizzontali</span>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Esempio — Asintoto orizzontale</div>
+      <div class="math-block">
+f(x) = (3x+1)/(x−2)
+
+lim  (3x+1)/(x−2)
+x→±∞
+
+<span class="comment">// Divido num e den per x (termine di grado massimo):</span>
+
+= lim  (3 + 1/x) / (1 − 2/x)
+  x→±∞
+
+= (3 + 0) / (1 − 0)
+
+<span class="result">= 3   →  ASINTOTO ORIZZONTALE: y = 3</span>
+
+<span class="comment">// Stesso limite per +∞ e −∞ → un solo asintoto orizzontale</span>
+      </div>
+    </div>
+
+    <h3>Asintoto Obliquo</h3>
+    <div class="def-box">
+      <div class="label">Definizione</div>
+      <p>La retta <code>y = mx + q</code> è asintoto obliquo se <code>lim f(x)/(x) = m</code> (finito e ≠ 0) e <code>lim [f(x) − mx] = q</code> (finito) per <code>x→±∞</code>.</p>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">⚠ Importante</div>
+      L'asintoto obliquo esiste <strong>solo se NON esiste l'asintoto orizzontale</strong> (cioè se il limite di f(x) per x→∞ è ±∞, non un numero finito). Se c'è l'asintoto orizzontale, non cercare l'obliquo!
+    </div>
+
+    <div class="steps">
+      <ol>
+        <li>Calcola <code>m = lim [f(x)/x]</code> per x→±∞. Se m è finito e ≠ 0, procedi.</li>
+        <li>Calcola <code>q = lim [f(x) − mx]</code> per x→±∞. Se q è finito, hai l'asintoto.</li>
+        <li>L'equazione dell'asintoto obliquo è: <code>y = mx + q</code>.</li>
+      </ol>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Esempio — Asintoto obliquo (dalla lavagna!)</div>
+      <div class="math-block">
+f(x) = x²/(x−1)
+
+<span class="comment">// Passo 1: calcolo m = lim f(x)/x</span>
+
+m = lim  [x²/(x−1)] / x  =  lim  x²/[x(x−1)]
+    x→∞                       x→∞
+
+  = lim  x²/(x²−x)  =  lim  x²/[x²(1−1/x)]
+    x→∞                   x→∞
+
+  = lim  1/(1−1/x)  =  1/1  = <span class="highlight">1</span>
+
+<span class="comment">// m = 1 ✓ (finito e ≠ 0) → cerco q</span>
+
+<span class="comment">// Passo 2: calcolo q = lim [f(x) − 1·x]</span>
+
+q = lim  [(x²/(x−1) − x)]
+    x→∞
+
+  = lim  [x²+x − x(x−1)] / (x−1)
+    x→∞
+
+  = lim  [x²+x − x²+ x] / (x−1)
+    x→∞
+
+  = lim  x/(x−1)  =  lim  1/(1−1/x)  = <span class="highlight">1</span>
+    x→∞               x→∞
+
+<span class="result">→ ASINTOTO OBLIQUO: y = x + 1</span>
+      </div>
+    </div>
+
+    <div class="example-box">
+      <div class="label">Esempio 2 — Asintoto obliquo con divisione polinomiale</div>
+      <p>Un metodo alternativo per funzioni razionali: eseguire la <strong>divisione polinomiale</strong> tra numeratore e denominatore.</p>
+      <div class="math-block">
+f(x) = x²/(x−1)
+
+<span class="comment">// Divido x² per (x−1) con la divisione euclidea:</span>
+x² ÷ (x−1):
+  x² = (x−1)·x + x          (primo quoziente: x)
+   x = (x−1)·1 + 1          (secondo quoziente: 1)
+
+→  f(x) = x + 1 + 1/(x−1)
+
+<span class="comment">// Per x→∞, il termine 1/(x−1) → 0</span>
+<span class="comment">// Rimane: y = x + 1</span>
+
+<span class="result">→ ASINTOTO OBLIQUO: y = x + 1  ✓ (stesso risultato!)</span>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <div class="label">📊 Riepilogo asintoti</div>
+      <strong>Verticale x=a:</strong> cerco dove la funzione non è definita → limite = ±∞<br>
+      <strong>Orizzontale y=L:</strong> calcolo limite per x→±∞ → se finito, è l'asintoto<br>
+      <strong>Obliquo y=mx+q:</strong> <em>solo se</em> limite per x→±∞ è ∞ → calcolo m poi q
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== SEZIONE 5: ESERCIZI SVOLTI ===== -->
+<div id="esercizi" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Esercizi <span>Svolti</span> Passo Passo</h2>
+    </div>
+
+    <!-- EX 1 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-num">ES. 1</span>
+        <span class="exercise-q">Trova discontinuità e asintoti di f(x) = (x+2)/(x²−4)</span>
+      </div>
+      <div class="exercise-body">
+        <div class="math-block">
+<span class="comment">// PASSO 1: Dominio</span>
+x²−4 = 0  →  (x−2)(x+2) = 0  →  x = 2  oppure  x = −2
+<span class="highlight">D: x ≠ 2, x ≠ −2</span>
+
+<span class="comment">// Punti sospetti: x = 2 e x = −2</span>
+
+<span class="comment">// PASSO 2: Studio in x = −2</span>
+f(x) = (x+2)/[(x−2)(x+2)] = 1/(x−2)  per x ≠ −2
+
+lim  f(x) = lim  1/(x−2) = 1/(−2−2) = 1/(−4) = <span class="highlight">−1/4</span>
+x→−2        x→−2
+
+<span class="comment">// Il limite esiste, è finito, ma f(−2) non è definita</span>
+
+<span class="result">→ DISCONTINUITÀ DI 3ª SPECIE in x = −2  (eliminabile)</span>
+
+<span class="comment">// PASSO 3: Studio in x = 2</span>
+lim  1/(x−2):  denom → 0⁻  →  <span class="highlight">−∞</span>
+x→2⁻
+
+lim  1/(x−2):  denom → 0⁺  →  <span class="highlight">+∞</span>
+x→2⁺
+
+<span class="result">→ DISCONTINUITÀ DI 2ª SPECIE in x = 2
+→ ASINTOTO VERTICALE: x = 2</span>
+
+<span class="comment">// PASSO 4: Asintoto orizzontale</span>
+lim  (x+2)/(x²−4) = lim  x/x² = lim  1/x = <span class="result">0</span>
+x→±∞                x→±∞        x→±∞
+
+<span class="comment">// Non cerco obliquo perché esiste l'orizzontale.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EX 2 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-num">ES. 2</span>
+        <span class="exercise-q">Studia f(x) = x³−12x — discontinuità e comportamento (dalla lavagna)</span>
+      </div>
+      <div class="exercise-body">
+        <div class="math-block">
+<span class="comment">// PASSO 1: Dominio</span>
+f(x) = x³ − 12x   è un polinomio → <span class="highlight">D: ∀x ∈ ℝ</span>
+<span class="comment">// Nessun punto di discontinuità!</span>
+
+<span class="comment">// PASSO 2: Studio del segno  f(x) > 0</span>
+x(x²−12) > 0
+x(x−√12)(x+√12) > 0
+
+<span class="comment">// Zeri: x = 0,  x = √12 ≃ 3.46,  x = −√12 ≃ −3.46</span>
+<span class="comment">// Studio segno (con tabella/SGN):</span>
+
+  −√12        0        +√12
+−−−+−−−|−−−−−−|−−−−−−|++++
+   −   |   +  |   −  |  +
+
+<span class="comment">// f(x) > 0 per x ∈ (−√12, 0) ∪ (√12, +∞)</span>
+
+<span class="comment">// PASSO 3: Limiti all'infinito</span>
+lim  x³(1 − 12/x²) = <span class="result">+∞</span>    (x→+∞: x³→+∞, parentesi→1)
+x→+∞
+
+<span class="comment">// lim  x³(1 − 12/x²) = <span class="result">−∞</span>    (x→−∞: x³→−∞)</span>
+x→−∞
+
+<span class="comment">// Nessun asintoto (polinomio → vai sempre a ±∞)</span>
+<span class="result">→ Nessun asintoto. La funzione è continua su ℝ.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EX 3 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-num">ES. 3</span>
+        <span class="exercise-q">Classifica le discontinuità di f(x) = (x²−x)/(2x²−3x+1)</span>
+      </div>
+      <div class="exercise-body">
+        <div class="math-block">
+<span class="comment">// PASSO 1: Dominio — trovo gli zeri del denominatore</span>
+2x²−3x+1 = 0
+Δ = 9 − 8 = 1
+x = (3±1)/4  →  x = 1  oppure  x = 1/2
+
+<span class="highlight">D: x ≠ 1,  x ≠ 1/2</span>
+
+<span class="comment">// PASSO 2: Semplifico la funzione</span>
+Num: x²−x = x(x−1)
+Den: 2x²−3x+1 = (2x−1)(x−1) = 2(x−1/2)(x−1)
+
+f(x) = x(x−1) / [2(x−1/2)(x−1)]
+
+<span class="comment">// PASSO 3: Studio x = 1</span>
+<span class="comment">// (x−1) si cancella!</span>
+lim  f(x) = lim  x / [2(x−1/2)]
+x→1         x→1
+
+= 1 / [2·(1−1/2)] = 1 / [2·(1/2)] = 1/1 = <span class="highlight">1</span>
+
+<span class="comment">// Limite finito, f(1) non definita</span>
+<span class="result">→ DISCONTINUITÀ DI 3ª SPECIE in x = 1  (eliminabile)</span>
+
+<span class="comment">// PASSO 4: Studio x = 1/2</span>
+<span class="comment">// (x−1/2) NON si cancella → vero asintoto</span>
+
+lim  x(x−1) / [2(x−1/2)(x−1)]
+x→1/2
+
+= lim  x / [2(x−1/2)]
+  x→1/2
+
+Num → 1/2 (finito ≠ 0)
+Den → 2·0 = 0⁺ o 0⁻
+
+Da sinistra (x&lt;1/2): (x−1/2)&lt;0 → den→0⁻ → <span class="highlight">−∞</span>
+Da destra  (x>1/2): (x−1/2)>0 → den→0⁺ → <span class="highlight">+∞</span>
+
+<span class="result">→ DISCONTINUITÀ DI 2ª SPECIE in x = 1/2
+→ ASINTOTO VERTICALE: x = 1/2</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EX 4 -->
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-num">ES. 4</span>
+        <span class="exercise-q">Trova tutti gli asintoti di f(x) = (2x²+x)/(x−1)</span>
+      </div>
+      <div class="exercise-body">
+        <div class="math-block">
+<span class="comment">// PASSO 1: Asintoto verticale</span>
+Den = 0  →  x = 1
+lim  (2x²+x)/(x−1):  num→3, den→0
+x→1
+<span class="result">→ ASINTOTO VERTICALE: x = 1</span>
+
+<span class="comment">// PASSO 2: Asintoto orizzontale</span>
+lim  (2x²+x)/(x−1)
+x→±∞
+<span class="comment">// grado num (2) > grado den (1) → limite = ±∞</span>
+
+<span class="comment">// Non c'è asintoto orizzontale → cerco obliquo</span>
+
+<span class="comment">// PASSO 3: Asintoto obliquo — m = lim f(x)/x</span>
+m = lim  (2x²+x) / [x(x−1)]
+    x→∞
+
+  = lim  (2x²+x) / (x²−x)
+
+<span class="comment">// Stesso grado → rapporto coefficienti principali</span>
+
+  = 2/1 = <span class="highlight">2</span>
+
+<span class="comment">// PASSO 4: q = lim [f(x) − 2x]</span>
+q = lim  [(2x²+x)/(x−1) − 2x]
+    x→∞
+
+  = lim  [2x²+x − 2x(x−1)] / (x−1)
+    x→∞
+
+  = lim  [2x²+x − 2x²+2x] / (x−1)
+    x→∞
+
+  = lim  (3x) / (x−1)
+    x→∞
+
+  = lim  3/(1−1/x) = <span class="highlight">3</span>
+
+<span class="result">→ ASINTOTO OBLIQUO: y = 2x + 3</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== SEZIONE 6: SISTEMI DI FUNZIONI ===== -->
+<div id="sistemi" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Sistemi di <span>Funzioni</span></h2>
+    </div>
+
+    <p>Le funzioni definite a tratti (o "per casi") sono funzioni che hanno <strong>espressioni diverse</strong> su diversi insiemi del dominio. Per studiarle bisogna analizzare ogni "pezzo" e i punti di giuntura.</p>
+
+    <div class="def-box">
+      <div class="label">Struttura tipica</div>
+      <div class="math-block" style="font-size:13px;padding:14px;">
+f(x) = { g₁(x)   se x &lt; a       (pezzo di sinistra)
+        { g₂(x)   se x = a       (valore nel punto, opzionale)
+        { g₃(x)   se x > a       (pezzo di destra)
+      </div>
+    </div>
+
+    <h3>Schema di studio completo</h3>
+    <div class="steps">
+      <ol>
+        <li><strong>Dominio:</strong> unisci i domini di ogni pezzo, tenendo conto delle condizioni.</li>
+        <li><strong>Punti di giuntura:</strong> per ogni punto a in cui cambia l'espressione, calcola limite sinistro, limite destro e valore (se esiste).</li>
+        <li><strong>Classifica la discontinuità</strong> (se presente) secondo le 3 specie.</li>
+        <li><strong>Asintoti:</strong> considera solo i pezzi che "vanno all'infinito" (spesso il primo o l'ultimo pezzo).</li>
+      </ol>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-num">ES. SIS. 1</span>
+        <span class="exercise-q">Studia la funzione a tratti (dalla lavagna)</span>
+      </div>
+      <div class="exercise-body">
+        <div class="math-block">
+       ⎧ (x²−x)/(2x²−3x+1)   se x ≥ 0
+f(x) = ⎨
+       ⎩ (eˣ⁺²−e)/(x²−x−2)   se x &lt; 0
+
+<span class="comment">// PUNTO DI GIUNTURA: x = 0</span>
+
+<span class="comment">// Limite da destra (uso pezzo con x ≥ 0):</span>
+lim  (x²−x)/(2x²−3x+1)
+x→0⁺
+
+= (0−0)/(0−0+1) = 0/1 = <span class="highlight">0</span>
+
+<span class="comment">// Limite da sinistra (uso pezzo con x &lt; 0):</span>
+lim  (eˣ⁺²−e)/(x²−x−2)
+x→0⁻
+
+= (e²−e)/(0−0−2) = e(e−1)/(−2) = <span class="highlight">−e(e−1)/2</span>  ≃ −2.09
+
+<span class="comment">// I due limiti sono diversi (0 ≠ −e(e−1)/2)</span>
+<span class="result">→ DISCONTINUITÀ DI 1ª SPECIE in x = 0  (salto)</span>
+
+<span class="comment">// Studio x = 1/2 (pezzo destra: den. 2x²−3x+1=0)</span>
+<span class="comment">// (vedi Esercizio 3 sopra per i dettagli)</span>
+<span class="result">→ DISCONTINUITÀ DI 2ª SPECIE in x = 1/2</span>
+
+<span class="comment">// Studio x = 1 (pezzo destra: forma 0/0)</span>
+<span class="result">→ DISCONTINUITÀ DI 3ª SPECIE in x = 1</span>
+
+<span class="comment">// Studio x = −1 (pezzo sinistra: den. x²−x−2=0)</span>
+x²−x−2 = 0  →  x = 2  oppure  x = −1
+(solo x=−1 è nel dominio x&lt;0)
+
+lim  (eˣ⁺²−e)/(x²−x−2)
+x→−1
+
+= lim  eˣ⁺²·(e^(x+1)−... )
+<span class="comment">// num: e^(−1+2)−e = e−e = 0 → forma 0/0</span>
+
+f(x) = eˣ⁺²−e / [(x−2)(x+1)]
+     = e·(e^(x+1)−1) / [(x−2)(x+1)]
+
+lim  e·(e^(x+1)−1)/(x+1) · 1/(x−2)
+x→−1
+
+<span class="comment">// lim (eᵗ−1)/t = 1 per t→0, con t = x+1</span>
+= e · 1 · 1/(−1−2) = e/(−3) = <span class="highlight">−e/3</span>
+
+<span class="comment">// Limite finito, f(−1) non definita</span>
+<span class="result">→ DISCONTINUITÀ DI 3ª SPECIE in x = −1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="exercise-num">ES. SIS. 2</span>
+        <span class="exercise-q">Studia f(x) = { x²+1 se x ≤ 0 | 2x+1 se x > 0 }</span>
+      </div>
+      <div class="exercise-body">
+        <div class="math-block">
+<span class="comment">// Dominio: tutto ℝ</span>
+
+<span class="comment">// Punto di giuntura: x = 0</span>
+
+f(0) = 0²+1 = <span class="highlight">1</span>            (esiste, usano la prima riga x≤0)
+
+lim  f(x) = lim  (x²+1) = 0+1 = <span class="highlight">1</span>
+x→0⁻       x→0⁻
+
+lim  f(x) = lim  (2x+1) = 0+1 = <span class="highlight">1</span>
+x→0⁺       x→0⁺
+
+<span class="comment">// Limite sinistro = limite destro = f(0) = 1</span>
+
+<span class="result">→ f è CONTINUA in x = 0!  (nessuna discontinuità)</span>
+
+<span class="comment">// Asintoti:</span>
+lim  (x²+1) = +∞    (x→−∞, primo pezzo)
+x→−∞
+lim  (2x+1) = +∞    (x→+∞, secondo pezzo)
+x→+∞
+
+<span class="result">→ Nessun asintoto orizzontale. Per l'obliquo:</span>
+lim  (2x+1)/x = 2  →  m = 2
+x→+∞
+lim  [(2x+1) − 2x] = 1  →  q = 1
+x→+∞
+<span class="result">→ ASINTOTO OBLIQUO (destra): y = 2x + 1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== SEZIONE 7: ALLENAMENTO ===== -->
+<div id="allenamento" class="practice">
+  <div class="container">
+    <h2>Esercizi per l'Allenamento</h2>
+    <p class="practice-sub">Prova a svolgere questi autonomamente prima di guardare soluzioni o chiedere aiuto.</p>
+
+    <ul class="practice-list">
+      <li>Trova dominio, punti di discontinuità (con classificazione) e asintoti di <strong>f(x) = (x²−9)/(x²−x−6)</strong>.</li>
+      <li>Classifica i punti di discontinuità e trova gli asintoti di <strong>f(x) = (2x+1)/(x²−1)</strong>.</li>
+      <li>Studia la funzione a tratti: <strong>f(x) = { ln(x) se x > 0 | −x+1 se x ≤ 0 }</strong>. Trova discontinuità in x=0 e asintoti.</li>
+      <li>Trova l'asintoto obliquo (se esiste) di <strong>f(x) = (x³−x)/(x²+1)</strong>.</li>
+      <li>Considera <strong>f(x) = (eˣ−1)/x</strong>. Studia il punto x=0 e classifica l'eventuale discontinuità.</li>
+      <li>Data <strong>f(x) = { kx+2 se x ≤ 1 | x²+1 se x > 1 }</strong>, trova il valore di k che rende f continua in x=1.</li>
+      <li>Studia tutti gli asintoti di <strong>f(x) = (x²+2x)/(x−3)</strong> e disegna una bozza del grafico.</li>
+      <li>Per <strong>f(x) = (x³)/(x²−4)</strong>, trova: dominio, discontinuità, asintoti verticali, e l'asintoto obliquo.</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ===== FORMULARIO ===== -->
+<div id="formulario" class="formula-sheet">
+  <div class="container">
+    <h2>Formulario Riassuntivo</h2>
+    <p class="subtitle">Tutto ciò che serve per la verifica, in un colpo d'occhio</p>
+
+    <div class="formula-grid">
+
+      <div class="formula-card">
+        <h4>Punti di Discontinuità — Le 3 specie</h4>
+        <p><strong>1ª Specie (salto):</strong></p>
+        <span class="f">lim⁻ f = L₁  e  lim⁺ f = L₂  con L₁ ≠ L₂  (finiti)</span>
+        <p><strong>2ª Specie (essenziale):</strong></p>
+        <span class="f">almeno un limite = ±∞ oppure non esiste</span>
+        <p><strong>3ª Specie (eliminabile):</strong></p>
+        <span class="f">lim f = L (finito) ma L ≠ f(x₀) o f non def.</span>
+      </div>
+
+      <div class="formula-card">
+        <h4>Asintoto Verticale</h4>
+        <p>La retta <code>x = a</code> è asintoto verticale se:</p>
+        <span class="f gold">lim f(x) = ±∞  (per x→a⁺ o x→a⁻)</span>
+        <p>→ Cerca dove il denominatore si annulla</p>
+        <p>→ Calcola il limite da destra e da sinistra</p>
+        <p>→ Se infinito: hai l'asintoto verticale</p>
+      </div>
+
+      <div class="formula-card">
+        <h4>Asintoto Orizzontale</h4>
+        <p>La retta <code>y = L</code> è asintoto orizzontale se:</p>
+        <span class="f gold">lim f(x) = L  (finito)  per x→±∞</span>
+        <p>Per funzioni razionali n(x)/d(x):</p>
+        <span class="f green">gr(n) &lt; gr(d)  →  y = 0</span>
+        <span class="f green">gr(n) = gr(d)  →  y = coeff. princ. n / coeff. princ. d</span>
+        <span class="f">gr(n) > gr(d)  →  non c'è as. orizzontale</span>
+      </div>
+
+      <div class="formula-card">
+        <h4>Asintoto Obliquo</h4>
+        <p>Esiste solo se NON c'è as. orizzontale. La retta è <code>y = mx+q</code>:</p>
+        <span class="f gold">m = lim  f(x)/x    (per x→±∞)</span>
+        <span class="f gold">q = lim  [f(x) − mx]   (per x→±∞)</span>
+        <p>Se m = 0: cerchi l'orizzontale (già fatto)</p>
+        <p>Se m = ±∞: non esiste asintoto obliquo</p>
+        <p><strong>Alternativa rapida:</strong> divisione polinomiale per funzioni razionali con gr(n) = gr(d)+1</p>
+      </div>
+
+      <div class="formula-card">
+        <h4>I 3 Teoremi</h4>
+        <p><strong>T1 — Unicità:</strong> il limite, se esiste, è unico</p>
+        <span class="f">se L⁺ ≠ L⁻  →  il limite non esiste</span>
+        <p><strong>T2 — Permanenza del segno:</strong></p>
+        <span class="f">lim f = L &gt; 0  →  f &gt; 0 vicino a x₀</span>
+        <p><strong>T3 — Confronto (Carabinieri):</strong></p>
+        <span class="f">g ≤ f ≤ h  e  lim g = lim h = L  →  lim f = L</span>
+      </div>
+
+      <div class="formula-card">
+        <h4>Procedura Studio Funzione</h4>
+        <span class="f green">1. Dominio D</span>
+        <span class="f green">2. Punti sospetti (bordi dominio, giunture)</span>
+        <span class="f green">3. Limiti: lim⁻, lim⁺, valore f(x₀)</span>
+        <span class="f green">4. Classifica discontinuità (1ª, 2ª, 3ª)</span>
+        <span class="f green">5. As. verticali (dove lim = ∞)</span>
+        <span class="f green">6. lim per x→±∞ → as. orizzontale?</span>
+        <span class="f green">7. Se no: calcola m e q → as. obliquo</span>
+      </div>
+
+      <div class="formula-card">
+        <h4>Limiti rapidi all'∞</h4>
+        <span class="f">lim  1/xⁿ = 0   per n > 0</span>
+        <span class="f">lim  xⁿ = +∞   (x→+∞, n > 0)</span>
+        <span class="f">lim  eˣ = +∞   (x→+∞)</span>
+        <span class="f">lim  eˣ = 0    (x→−∞)</span>
+        <span class="f">lim  ln(x) = +∞   (x→+∞)</span>
+        <span class="f">lim  ln(x) = −∞   (x→0⁺)</span>
+        <span class="f gold">lim  (eˣ−1)/x = 1   (x→0)</span>
+        <span class="f gold">lim  ln(1+x)/x = 1  (x→0)</span>
+      </div>
+
+      <div class="formula-card">
+        <h4>Funzioni a Tratti — Checklist</h4>
+        <p>Per ogni punto di giuntura x₀:</p>
+        <span class="f">① Calcola lim⁻ (usa pezzo a sinistra)</span>
+        <span class="f">② Calcola lim⁺ (usa pezzo a destra)</span>
+        <span class="f">③ Calcola f(x₀) se definita</span>
+        <p>Poi confronta:</p>
+        <span class="f green">lim⁻ = lim⁺ = f(x₀)  →  CONTINUA</span>
+        <span class="f">lim⁻ ≠ lim⁺ (finiti)  →  1ª specie</span>
+        <span class="f">un limite = ∞          →  2ª specie</span>
+        <span class="f">lim esiste ma ≠ f(x₀)  →  3ª specie</span>
+      </div>
+
+    </div>
+
+    <div style="margin-top:40px;padding:24px;border:1px solid rgba(184,134,11,0.3);background:rgba(184,134,11,0.05);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--gold-light);margin-bottom:12px;">⚡ REGOLE D'ORO PER LA VERIFICA</div>
+      <ul style="color:#ccc;font-size:14px;list-style:none;">
+        <li style="margin-bottom:10px;">① <strong style="color:white;">Sempre dominio prima</strong> — ti dice subito dove guardare</li>
+        <li style="margin-bottom:10px;">② <strong style="color:white;">Semplifica sempre</strong> — le forme 0/0 spesso nascondono discontinuità di 3ª specie</li>
+        <li style="margin-bottom:10px;">③ <strong style="color:white;">As. obliquo SOLO se no orizzontale</strong> — non cercarli entrambi insieme</li>
+        <li style="margin-bottom:10px;">④ <strong style="color:white;">Nelle funzioni a tratti</strong>: usa il pezzo giusto per ogni limite (destro o sinistro)</li>
+        <li style="margin-bottom:10px;">⑤ <strong style="color:white;">Scrivi sempre la conclusione</strong>: "discontinuità di N-esima specie in x = …" e "asintoto … in …"</li>
+        <li>⑥ <strong style="color:white;">Controlla il segno</strong> di numeratore e denominatore per capire se il limite è +∞ o −∞</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div style="background:var(--ink);color:#555;text-align:center;padding:24px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;">
+  GUIDA STUDIO · ANALISI MATEMATICA · BUONA FORTUNA
+</div>
+
+</body>
+</html>
