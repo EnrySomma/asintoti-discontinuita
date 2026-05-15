@@ -1,1 +1,0 @@
-# asintoti-discontinuita
